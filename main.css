@@ -20,7 +20,6 @@ body {
 
 .blog {
     text-align: left;
-    padding-right: 50px;
 }
 
 .blog a {
@@ -35,4 +34,22 @@ body {
 }
 .bdate {
     font-weight: 600;
+}
+
+
+/* Media query for mobile devices */
+@media only screen and (max-width: 600px) {
+    .container {
+        padding: 10px; /* Adjust padding for smaller screens */
+        margin-left: 10px; /* Adjust margin left for smaller screens */
+        margin-right: 10px; /* Add right margin for smaller screens */
+    }
+
+    .links a {
+        margin-bottom: 5px; /* Adjust margin between links for smaller screens */
+    }
+
+    .blog {
+        padding-right: 10px; /* Adjust padding for smaller screens */
+    }
 }
