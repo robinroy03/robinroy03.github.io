@@ -37,19 +37,19 @@ body {
 }
 
 
-/* Media query for mobile devices */
+
 @media only screen and (max-width: 600px) {
     .container {
-        padding: 10px; /* Adjust padding for smaller screens */
-        margin-left: 10px; /* Adjust margin left for smaller screens */
-        margin-right: 10px; /* Add right margin for smaller screens */
+        padding: 10px; 
+        margin-left: 10px; 
+        margin-right: 10px; 
     }
 
     .links a {
-        margin-bottom: 5px; /* Adjust margin between links for smaller screens */
+        margin-bottom: 5px;
     }
 
     .blog {
-        padding-right: 10px; /* Adjust padding for smaller screens */
+        padding-right: 10px; 
     }
 }
