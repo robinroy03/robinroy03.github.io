@@ -1,3 +1,39 @@
 body {
-    text-align: center;
+    background-color: rgba(245, 222, 179, 0.287);
+    font-family: Arial, Helvetica, sans-serif;
+}
+
+.container {
+    margin-left: 230px;
+    margin-top: 50px;
+}
+
+.links a {
+    text-decoration: none;
+    font-weight: 400;
+    color: rgb(23, 45, 210);
+}
+
+.links a:hover {
+    text-decoration: underline;
+}
+
+.blog {
+    text-align: left;
+    padding-right: 50px;
+}
+
+.blog a {
+    text-decoration: none;
+    font-weight: 400;
+    color: rgb(23, 45, 210);
+}
+
+.blog a:hover {
+    text-decoration: underline;
+    text-transform: capitalize;
+}
+.bdate {
+    font-weight: 600;
+    text-decoration: underline;
 }
