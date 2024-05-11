@@ -1,2 +1,2 @@
 # homepage
-A page for sharing my thoughts.
+A [page](https://robinroy03.github.io/homepage) for sharing my thoughts.
