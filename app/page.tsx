@@ -101,7 +101,7 @@ export default function Home() {
 
   const draw = (e: React.MouseEvent<HTMLCanvasElement> | React.TouchEvent<HTMLCanvasElement>) => {
     if (!drawing || !context) return
-
+    
     const position = getPosition(e)
     context.lineTo(position.x, position.y)
     context.stroke()
@@ -156,7 +156,7 @@ export default function Home() {
   const formattedAge = age.toFixed(9).padStart(13, ' ')
 
   return (
-    <main className="min-h-screen relative bg-background text-foreground">
+    <main className="min-h-screen relative bg-background text-foreground flex flex-col items-center justify-center">
       {/* Drawing Canvas */}
       {isDrawing && (
         <div className="fixed inset-0 z-50">
@@ -169,7 +169,14 @@ export default function Home() {
             onTouchStart={startDrawing}
             onTouchMove={draw}
             onTouchEnd={endDrawing}
-            className="w-full h-full cursor-crosshair"
+            className="w-full h-full cursor-crosshair touch-none"
+            style={{ 
+              touchAction: 'none',
+              WebkitTouchCallout: 'none',
+              WebkitUserSelect: 'none',
+              userSelect: 'none',
+              overscrollBehavior: 'none'
+            }}
           />
 
           {/* Drawing Controls - Top Right */}
@@ -191,12 +198,12 @@ export default function Home() {
           {/* Color Picker - Bottom Center */}
           <div className="fixed bottom-8 left-1/2 transform -translate-x-1/2 z-60">
             <div className="bg-background/90 backdrop-blur-sm border border-border rounded-lg p-3 shadow-lg">
-              <div className="flex gap-2">
+              <div className="grid grid-cols-5 md:flex md:gap-2 gap-2">
                 {colors.map((color) => (
                   <button
                     key={color}
                     onClick={() => setCurrentColor(color)}
-                    className={`w-8 h-8 rounded-full border-2 transition-all hover:scale-110 ${currentColor === color ? 'border-foreground scale-110' : 'border-muted'
+                    className={`w-8 h-8 shrink-0 rounded-full border-2 transition-all hover:scale-110 ${currentColor === color ? 'border-foreground scale-110' : 'border-muted'
                       }`}
                     style={{ backgroundColor: color }}
                   />
