@@ -3,6 +3,8 @@
 import type React from "react"
 import { useEffect, useState, useRef } from "react"
 import { Github, Mail, Linkedin } from "lucide-react"
+import { ThemeToggle } from "@/components/theme-toggle"
+import { TimeDisplay } from "@/components/time-display"
 
 export default function Home() {
   const [isDrawing, setIsDrawing] = useState(false)
@@ -179,20 +181,25 @@ export default function Home() {
             }}
           />
 
-          {/* Drawing Controls - Top Right */}
-          <div className="fixed top-4 right-4 flex gap-4 z-60">
-            <button
-              onClick={clearCanvas}
-              className="text-muted-foreground hover:text-red-500 transition-colors font-sans text-sm underline decoration-dotted decoration-1 underline-offset-4"
-            >
-              clear
-            </button>
-            <button
-              onClick={() => setIsDrawing(false)}
-              className="text-muted-foreground hover:text-foreground transition-colors font-sans text-sm underline decoration-dotted decoration-1 underline-offset-4"
-            >
-              exit
-            </button>
+          {/* Drawing Controls and Theme Toggle - Top Right */}
+          <div className="fixed top-4 right-4 flex flex-col items-end gap-2 z-60 pointer-events-none">
+            <div className="flex gap-4 pointer-events-auto">
+              <button
+                onClick={clearCanvas}
+                className="text-muted-foreground hover:text-red-500 transition-colors font-sans text-sm underline decoration-dotted decoration-1 underline-offset-4"
+              >
+                clear
+              </button>
+              <button
+                onClick={() => setIsDrawing(false)}
+                className="text-muted-foreground hover:text-foreground transition-colors font-sans text-sm underline decoration-dotted decoration-1 underline-offset-4"
+              >
+                exit
+              </button>
+            </div>
+            <div className="pointer-events-auto">
+              <ThemeToggle />
+            </div>
           </div>
 
           {/* Color Picker - Bottom Center */}
@@ -214,15 +221,23 @@ export default function Home() {
         </div>
       )}
 
-      {/* Enable Drawing Link - Top Right */}
+      {/* Time Display - Top Left */}
+      <div className="fixed top-4 left-4 z-40">
+        <TimeDisplay />
+      </div>
+
+      {/* Enable Drawing Link and Theme Toggle - Top Right */}
       {!isDrawing && (
-        <div className="fixed top-4 right-4 z-40">
+        <div className="fixed top-4 right-4 z-40 flex flex-col items-end gap-2">
           <button
             onClick={() => setIsDrawing(true)}
             className="text-muted-foreground hover:text-foreground transition-colors font-sans text-sm underline decoration-dotted decoration-1 underline-offset-4"
           >
             enable drawing
           </button>
+          <div className="pointer-events-auto">
+            <ThemeToggle />
+          </div>
         </div>
       )}
 
