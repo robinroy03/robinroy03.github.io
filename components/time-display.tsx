@@ -2,7 +2,11 @@
 
 import { useEffect, useState } from "react"
 
-export function TimeDisplay() {
+interface TimeDisplayProps {
+  isDrawing: boolean
+}
+
+export function TimeDisplay({ isDrawing }: TimeDisplayProps) {
   const [userTime, setUserTime] = useState("")
   const [userDate, setUserDate] = useState("")
   const [indiaTime, setIndiaTime] = useState("")
@@ -68,19 +72,27 @@ export function TimeDisplay() {
     return () => clearInterval(interval)
   }, [])
 
+  const textColorClass = isDrawing ? 'text-blue-600' : 'text-white'
+
   return (
-    <div className="flex flex-col mt-6 sm:mt-0">
-      <div className="text-muted-foreground font-sans text-sm">
-        your time: <span className="font-mono tabular-nums">{userTime}</span>
-        <span className="text-muted-foreground/50 mx-2">/</span>
-        <span className="text-muted-foreground/75">{userDate}</span>
+    <div className="flex flex-col max-w-[200px] sm:max-w-none">
+      <div className={`font-sans text-xs sm:text-sm ${textColorClass}`}>
+        <div className="sm:flex sm:items-center">
+          <div className="flex flex-col sm:flex-row sm:items-center">
+            <span>your time: <span className="font-mono tabular-nums">{userTime}</span></span>
+            <span className={`sm:ml-2 ${isDrawing ? 'text-blue-600/75' : 'text-white/75'}`}>{userDate}</span>
+          </div>
+        </div>
       </div>
-      <div className="text-muted-foreground font-sans text-sm mt-1">
-        my time: <span className="font-mono tabular-nums">{indiaTime}</span>
-        <span className="text-muted-foreground/50 mx-2">/</span>
-        <span className="text-muted-foreground/75">{indiaDate}</span>
+      <div className={`font-sans text-xs sm:text-sm mt-1 ${textColorClass}`}>
+        <div className="sm:flex sm:items-center">
+          <div className="flex flex-col sm:flex-row sm:items-center">
+            <span>my time: <span className="font-mono tabular-nums">{indiaTime}</span></span>
+            <span className={`sm:ml-2 ${isDrawing ? 'text-blue-600/75' : 'text-white/75'}`}>{indiaDate}</span>
+          </div>
+        </div>
       </div>
-      <div className="text-muted-foreground/60 font-sans text-sm mt-2 italic">
+      <div className={`font-sans text-xs sm:text-sm mt-2 italic ${isDrawing ? 'text-blue-600/60' : 'text-white/60'}`}>
         {timeDiff}
       </div>
     </div>

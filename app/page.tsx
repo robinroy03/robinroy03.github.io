@@ -158,10 +158,19 @@ export default function Home() {
   const formattedAge = age.toFixed(9).padStart(13, ' ')
 
   return (
-    <main className="min-h-screen relative bg-background text-foreground flex flex-col items-center justify-center">
+    <main 
+      className="min-h-screen relative"
+      style={{
+        backgroundImage: !isDrawing && isMobile ? 'url("/indiagate6.png")' : 'none',
+        backgroundColor: !isDrawing && !isMobile ? '#3b82f6' : 'transparent',
+        backgroundSize: 'cover',
+        backgroundPosition: 'center',
+        backgroundRepeat: 'no-repeat'
+      }}
+    >
       {/* Drawing Canvas */}
       {isDrawing && (
-        <div className="fixed inset-0 z-50">
+        <div className="fixed inset-0 z-50 bg-background">
           <canvas
             ref={canvasRef}
             onMouseDown={startDrawing}
@@ -186,13 +195,13 @@ export default function Home() {
             <div className="flex gap-4 pointer-events-auto">
               <button
                 onClick={clearCanvas}
-                className="text-muted-foreground hover:text-red-500 transition-colors font-sans text-sm underline decoration-dotted decoration-1 underline-offset-4"
+                className="text-blue-600 hover:text-red-500 transition-colors font-sans text-sm underline decoration-dotted decoration-1 underline-offset-4"
               >
                 clear
               </button>
               <button
                 onClick={() => setIsDrawing(false)}
-                className="text-muted-foreground hover:text-foreground transition-colors font-sans text-sm underline decoration-dotted decoration-1 underline-offset-4"
+                className="text-blue-600 hover:text-foreground transition-colors font-sans text-sm underline decoration-dotted decoration-1 underline-offset-4"
               >
                 exit
               </button>
@@ -223,39 +232,42 @@ export default function Home() {
 
       {/* Time Display - Top Left */}
       <div className="fixed top-4 left-4 z-40">
-        <TimeDisplay />
+        <TimeDisplay isDrawing={isDrawing} />
       </div>
 
-      {/* Enable Drawing Link and Theme Toggle - Top Right */}
+      {/* Enable Drawing Link - Top Right (no theme toggle when not drawing) */}
       {!isDrawing && (
-        <div className="fixed top-4 right-4 z-40 flex flex-col items-end gap-2">
+        <div className="fixed top-4 right-4 z-40">
           <button
             onClick={() => setIsDrawing(true)}
-            className="text-muted-foreground hover:text-foreground transition-colors font-sans text-sm underline decoration-dotted decoration-1 underline-offset-4"
+            className="text-white hover:text-gray-200 transition-colors font-sans text-sm underline decoration-dotted decoration-1 underline-offset-4"
           >
             enable drawing
           </button>
-          <div className="pointer-events-auto">
-            <ThemeToggle />
-          </div>
         </div>
       )}
 
-      <div className="max-w-3xl mx-auto px-4 py-12 md:py-24">
-        <div className="text-center mb-12">
-          {/* Name in Bodoni style - big, blue, bold, letter-spacing -0.5 */}
-          <h1 className="text-6xl md:text-8xl font-bodoni font-bold text-blue-600 mb-6" style={{ letterSpacing: '-0.5px' }}>
+      <div className={`max-w-3xl mx-auto px-4 ${
+        isMobile ? 'pt-36' : 'pt-22 flex flex-col justify-center min-h-screen'
+      }`}>
+        <div className={`text-center ${isMobile ? 'mb-2' : 'mb-12'}`}>
+          {/* Name in Bodoni style - responsive sizing */}
+          <h1 className={`${
+            isMobile ? 'text-6xl' : 'text-6xl md:text-8xl'
+          } font-bodoni font-bold mb-6 ${!isDrawing ? 'text-white' : 'text-blue-600'}`} style={{ letterSpacing: '-0.5px' }}>
             Robin Roy
           </h1>
 
-          <p className="text-muted-foreground max-w-lg mx-auto font-sans">
+          <p className={`${
+            isMobile ? 'text-base' : 'max-w-lg mx-auto'
+          } font-sans ${!isDrawing ? 'text-white' : 'text-blue-600'}`}>
             Welcome to my little place on the internet. I&apos;m a{" "}
             <span className="font-mono tabular-nums">{formattedAge}</span>{" "}
             year old from India.
           </p>
         </div>
 
-        <div className="flex justify-center mb-12">
+        <div className="flex justify-center">
           <div className="flex flex-wrap items-center justify-center gap-1">
             {links.map((link, index) => (
               <div key={link.name} className="flex items-center">
@@ -263,17 +275,17 @@ export default function Home() {
                   href={link.href}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="group relative px-3 py-2 text-muted-foreground hover:text-primary transition-all duration-200"
+                  className={`group relative px-3 py-2 transition-all duration-200 ${!isDrawing ? 'text-white hover:text-gray-200' : 'text-blue-600 hover:text-blue-800'}`}
                 >
-                  <span className="inline-block transition-all duration-200 group-hover:scale-0 group-hover:opacity-0">
+                  <span className="inline-block transition-all group-hover:opacity-0">
                     {link.name}
                   </span>
-                  <span className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 scale-0 opacity-0 transition-all duration-200 group-hover:scale-150 group-hover:opacity-100">
+                  <span className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 opacity-0 transition-all group-hover:opacity-100">
                     {link.icon}
                   </span>
                 </a>
                 {index < links.length - 1 && (
-                  <span className="text-muted-foreground/30 px-0.5">/</span>
+                  <span className={`px-0.5 ${!isDrawing ? 'text-white/30' : 'text-blue-600/30'}`}>/</span>
                 )}
               </div>
             ))}
