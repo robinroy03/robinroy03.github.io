@@ -162,12 +162,29 @@ export default function Home() {
       className="min-h-screen relative"
       style={{
         backgroundImage: !isDrawing && isMobile ? 'url("/indiagate6.png")' : 'none',
-        backgroundColor: !isDrawing && !isMobile ? '#3b82f6' : 'transparent',
+        backgroundColor: !isDrawing && !isMobile ? '#2563eb' : 'transparent',
         backgroundSize: 'cover',
         backgroundPosition: 'center',
         backgroundRepeat: 'no-repeat'
       }}
     >
+      {/* Sunlight glow effect for desktop */}
+      {!isDrawing && !isMobile && (
+        <>
+          {/* Bottom sunlight glow spread across full width */}
+          <div 
+            className="absolute inset-0 pointer-events-none"
+            style={{
+              background: `radial-gradient(ellipse 100% 600px at 50% 100%, 
+                rgba(255, 223, 0, 0.15) 0%, 
+                rgba(255, 193, 7, 0.1) 20%, 
+                rgba(255, 152, 0, 0.08) 35%, 
+                rgba(255, 87, 34, 0.05) 50%, 
+                transparent 70%)`
+            }}
+          />
+        </>
+      )}
       {/* Drawing Canvas */}
       {isDrawing && (
         <div className="fixed inset-0 z-50 bg-background">
