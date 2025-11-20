@@ -67,7 +67,7 @@ export default function KissPage() {
             <video
                 key={isMobile ? "mobile" : "desktop"}
                 ref={videoRef}
-                src={isMobile ? "/sabrina_phone.mp4" : "/Sabrina.webm"}
+                src={isMobile ? "/sabrina_phone_small.mp4" : "/Sabrina.webm"}
                 className="w-full h-full object-cover"
                 autoPlay
                 muted
