@@ -65,18 +65,19 @@ export default function KissPage() {
             }}
         >
             <video
+                key={isMobile ? "mobile" : "desktop"}
                 ref={videoRef}
-                src="/Sabrina.webm"
-                className="w-full h-full object-contain"
+                src={isMobile ? "/sabrina_phone.mp4" : "/Sabrina.webm"}
+                className="w-full h-full object-cover"
                 autoPlay
                 muted
                 playsInline
-                loop={false}
+                loop={true}
                 controls={false}
                 style={{
                     width: '100vw',
                     height: '100vh',
-                    objectFit: 'contain',
+                    objectFit: 'cover',
                     backgroundColor: 'black'
                 }}
             />
