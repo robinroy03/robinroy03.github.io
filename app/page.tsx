@@ -1,24 +1,14 @@
 "use client"
 
-import type React from "react"
-import { useEffect, useState, useRef } from "react"
+import { useEffect, useState } from "react"
 import { Github, Mail, Linkedin } from "lucide-react"
-import { ThemeToggle } from "@/components/theme-toggle"
 import { TimeDisplay } from "@/components/time-display"
+import { ExcalidrawBoard } from "@/components/excalidraw-board"
 
 export default function Home() {
   const [isDrawing, setIsDrawing] = useState(false)
   const [age, setAge] = useState(0)
   const [isMobile, setIsMobile] = useState(false)
-  const canvasRef = useRef<HTMLCanvasElement>(null)
-  const [drawing, setDrawing] = useState(false)
-  const [context, setContext] = useState<CanvasRenderingContext2D | null>(null)
-  const [currentColor, setCurrentColor] = useState("#000000")
-
-  const colors = [
-    "#000000", "#FF0000", "#00FF00", "#0000FF", "#FFFF00",
-    "#FF00FF", "#00FFFF", "#FFA500", "#800080", "#FFC0CB"
-  ]
 
   useEffect(() => {
     // Check if mobile
@@ -33,7 +23,7 @@ export default function Home() {
   useEffect(() => {
     // Calculate precise age with 9 decimal places
     const calculateAge = () => {
-      const dob = new Date("2003-08-06T00:00:00")
+      const dob = new Date("2003-08-06T00:00:00+05:30")
       const now = new Date()
 
       const diffInMs = now.getTime() - dob.getTime()
@@ -51,93 +41,6 @@ export default function Home() {
 
     return () => clearInterval(interval)
   }, [])
-
-  useEffect(() => {
-    if (isDrawing && canvasRef.current) {
-      const canvas = canvasRef.current
-      const ctx = canvas.getContext("2d")
-
-      if (ctx) {
-        canvas.width = window.innerWidth
-        canvas.height = window.innerHeight
-        ctx.lineJoin = "round"
-        ctx.lineCap = "round"
-        ctx.lineWidth = 3
-        ctx.strokeStyle = currentColor
-        setContext(ctx)
-      }
-
-      const handleResize = () => {
-        if (canvas && ctx) {
-          const imageData = ctx.getImageData(0, 0, canvas.width, canvas.height)
-          canvas.width = window.innerWidth
-          canvas.height = window.innerHeight
-          ctx.lineJoin = "round"
-          ctx.lineCap = "round"
-          ctx.lineWidth = 3
-          ctx.strokeStyle = currentColor
-          ctx.putImageData(imageData, 0, 0)
-        }
-      }
-
-      window.addEventListener("resize", handleResize)
-      return () => window.removeEventListener("resize", handleResize)
-    }
-  }, [isDrawing])
-
-  useEffect(() => {
-    // Update stroke color when color changes, but don't clear the canvas
-    if (context) {
-      context.strokeStyle = currentColor
-    }
-  }, [currentColor, context])
-
-  const startDrawing = (e: React.MouseEvent<HTMLCanvasElement> | React.TouchEvent<HTMLCanvasElement>) => {
-    if (!context) return
-    setDrawing(true)
-
-    const position = getPosition(e)
-    context.beginPath()
-    context.moveTo(position.x, position.y)
-  }
-
-  const draw = (e: React.MouseEvent<HTMLCanvasElement> | React.TouchEvent<HTMLCanvasElement>) => {
-    if (!drawing || !context) return
-    
-    const position = getPosition(e)
-    context.lineTo(position.x, position.y)
-    context.stroke()
-  }
-
-  const endDrawing = () => {
-    setDrawing(false)
-  }
-
-  const getPosition = (e: React.MouseEvent<HTMLCanvasElement> | React.TouchEvent<HTMLCanvasElement>) => {
-    const canvas = canvasRef.current
-    if (!canvas) return { x: 0, y: 0 }
-
-    let x, y
-
-    if ("touches" in e) {
-      const touch = e.touches[0]
-      const rect = canvas.getBoundingClientRect()
-      x = touch.clientX - rect.left
-      y = touch.clientY - rect.top
-    } else {
-      const rect = canvas.getBoundingClientRect()
-      x = e.clientX - rect.left
-      y = e.clientY - rect.top
-    }
-
-    return { x, y }
-  }
-
-  const clearCanvas = () => {
-    if (context && canvasRef.current) {
-      context.clearRect(0, 0, canvasRef.current.width, canvasRef.current.height)
-    }
-  }
 
   const links = [
     { name: "GitHub", href: "https://github.com/robinroy03", icon: <Github className="h-5 w-5 fill-current" /> },
@@ -185,67 +88,8 @@ export default function Home() {
           />
         </>
       )}
-      {/* Drawing Canvas */}
-      {isDrawing && (
-        <div className="fixed inset-0 z-50 bg-background">
-          <canvas
-            ref={canvasRef}
-            onMouseDown={startDrawing}
-            onMouseMove={draw}
-            onMouseUp={endDrawing}
-            onMouseLeave={endDrawing}
-            onTouchStart={startDrawing}
-            onTouchMove={draw}
-            onTouchEnd={endDrawing}
-            className="w-full h-full cursor-crosshair touch-none"
-            style={{ 
-              touchAction: 'none',
-              WebkitTouchCallout: 'none',
-              WebkitUserSelect: 'none',
-              userSelect: 'none',
-              overscrollBehavior: 'none'
-            }}
-          />
-
-          {/* Drawing Controls and Theme Toggle - Top Right */}
-          <div className="fixed top-4 right-4 flex flex-col items-end gap-2 z-60 pointer-events-none">
-            <div className="flex gap-4 pointer-events-auto">
-              <button
-                onClick={clearCanvas}
-                className="text-blue-600 hover:text-red-500 transition-colors font-sans text-sm underline decoration-dotted decoration-1 underline-offset-4"
-              >
-                clear
-              </button>
-              <button
-                onClick={() => setIsDrawing(false)}
-                className="text-blue-600 hover:text-foreground transition-colors font-sans text-sm underline decoration-dotted decoration-1 underline-offset-4"
-              >
-                exit
-              </button>
-            </div>
-            <div className="pointer-events-auto">
-              <ThemeToggle />
-            </div>
-          </div>
-
-          {/* Color Picker - Bottom Center */}
-          <div className="fixed bottom-8 left-1/2 transform -translate-x-1/2 z-60">
-            <div className="bg-background/90 backdrop-blur-sm border border-border rounded-lg p-3 shadow-lg">
-              <div className="grid grid-cols-5 md:flex md:gap-2 gap-2">
-                {colors.map((color) => (
-                  <button
-                    key={color}
-                    onClick={() => setCurrentColor(color)}
-                    className={`w-8 h-8 shrink-0 rounded-full border-2 transition-all hover:scale-110 ${currentColor === color ? 'border-foreground scale-110' : 'border-muted'
-                      }`}
-                    style={{ backgroundColor: color }}
-                  />
-                ))}
-              </div>
-            </div>
-          </div>
-        </div>
-      )}
+      {/* Excalidraw Drawing Board */}
+      {isDrawing && <ExcalidrawBoard onExit={() => setIsDrawing(false)} />}
 
       {/* Time Display - Top Left */}
       <div className="fixed top-4 left-4 z-40">

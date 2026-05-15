@@ -12,6 +12,7 @@ export function TimeDisplay({ isDrawing }: TimeDisplayProps) {
   const [indiaTime, setIndiaTime] = useState("")
   const [indiaDate, setIndiaDate] = useState("")
   const [timeDiff, setTimeDiff] = useState("")
+  const [sameZone, setSameZone] = useState(false)
 
   useEffect(() => {
     const updateTime = () => {
@@ -23,8 +24,10 @@ export function TimeDisplay({ isDrawing }: TimeDisplayProps) {
       const absoluteDiff = Math.abs(diffInHours)
       
       if (absoluteDiff < 0.1) {
+        setSameZone(true)
         setTimeDiff("oh, we both are in the same timezone!")
       } else {
+        setSameZone(false)
         const diffText = diffInHours > 0 
           ? `oh, you're ${absoluteDiff.toFixed(1)} hours behind me!`
           : `oh, you're ${absoluteDiff.toFixed(1)} hours ahead of me!`
@@ -76,22 +79,29 @@ export function TimeDisplay({ isDrawing }: TimeDisplayProps) {
 
   return (
     <div className="flex flex-col max-w-[200px] sm:max-w-none">
-      <div className={`font-sans text-xs sm:text-sm ${textColorClass}`}>
-        <div className="sm:flex sm:items-center">
+      {sameZone ? (
+        <div className={`font-sans text-xs sm:text-sm ${textColorClass}`}>
           <div className="flex flex-col sm:flex-row sm:items-center">
-            <span>your time: <span className="font-mono tabular-nums">{userTime}</span></span>
-            <span className={`sm:ml-2 ${isDrawing ? 'text-blue-600/75' : 'text-white/75'}`}>{userDate}</span>
-          </div>
-        </div>
-      </div>
-      <div className={`font-sans text-xs sm:text-sm mt-1 ${textColorClass}`}>
-        <div className="sm:flex sm:items-center">
-          <div className="flex flex-col sm:flex-row sm:items-center">
-            <span>my time: <span className="font-mono tabular-nums">{indiaTime}</span></span>
+            <span>time: <span className="font-mono tabular-nums">{indiaTime}</span></span>
             <span className={`sm:ml-2 ${isDrawing ? 'text-blue-600/75' : 'text-white/75'}`}>{indiaDate}</span>
           </div>
         </div>
-      </div>
+      ) : (
+        <>
+          <div className={`font-sans text-xs sm:text-sm ${textColorClass}`}>
+            <div className="flex flex-col sm:flex-row sm:items-center">
+              <span>your time: <span className="font-mono tabular-nums">{userTime}</span></span>
+              <span className={`sm:ml-2 ${isDrawing ? 'text-blue-600/75' : 'text-white/75'}`}>{userDate}</span>
+            </div>
+          </div>
+          <div className={`font-sans text-xs sm:text-sm mt-1 ${textColorClass}`}>
+            <div className="flex flex-col sm:flex-row sm:items-center">
+              <span>my time: <span className="font-mono tabular-nums">{indiaTime}</span></span>
+              <span className={`sm:ml-2 ${isDrawing ? 'text-blue-600/75' : 'text-white/75'}`}>{indiaDate}</span>
+            </div>
+          </div>
+        </>
+      )}
       <div className={`font-sans text-xs sm:text-sm mt-2 italic ${isDrawing ? 'text-blue-600/60' : 'text-white/60'}`}>
         {timeDiff}
       </div>
