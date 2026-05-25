@@ -4,9 +4,11 @@ import { useEffect, useState } from "react"
 import { Github, Mail, Linkedin } from "lucide-react"
 import { TimeDisplay } from "@/components/time-display"
 import { ExcalidrawBoard } from "@/components/excalidraw-board"
+import { TextEditor } from "@/components/text-editor"
 
 export default function Home() {
   const [isDrawing, setIsDrawing] = useState(false)
+  const [isEditing, setIsEditing] = useState(false)
   const [age, setAge] = useState(0)
   const [isMobile, setIsMobile] = useState(false)
 
@@ -91,19 +93,28 @@ export default function Home() {
       {/* Excalidraw Drawing Board */}
       {isDrawing && <ExcalidrawBoard onExit={() => setIsDrawing(false)} />}
 
+      {/* Text Editor */}
+      {isEditing && <TextEditor onExit={() => setIsEditing(false)} />}
+
       {/* Time Display - Top Left */}
       <div className="fixed top-4 left-4 z-40">
         <TimeDisplay isDrawing={isDrawing} />
       </div>
 
-      {/* Enable Drawing Link - Top Right (no theme toggle when not drawing) */}
-      {!isDrawing && (
-        <div className="fixed top-4 right-4 z-40">
+      {/* Top Right Links */}
+      {!isDrawing && !isEditing && (
+        <div className="fixed top-4 right-4 z-40 flex flex-col items-end gap-1">
           <button
             onClick={() => setIsDrawing(true)}
             className="text-white hover:text-gray-200 transition-colors font-sans text-sm underline decoration-dotted decoration-1 underline-offset-4"
           >
-            enable drawing
+            open whiteboard
+          </button>
+          <button
+            onClick={() => setIsEditing(true)}
+            className="text-white hover:text-gray-200 transition-colors font-sans text-sm underline decoration-dotted decoration-1 underline-offset-4"
+          >
+            open text editor
           </button>
         </div>
       )}
